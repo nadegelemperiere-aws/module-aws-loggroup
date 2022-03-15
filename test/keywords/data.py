@@ -58,7 +58,7 @@ def load_standard_test_data(loggroup, role, account) :
     result['key'][0]['data']['Origin'] = 'AWS_KMS'
     result['key'][0]['data']['CustomerMasterKeySpec'] = 'SYMMETRIC_DEFAULT'
     result['key'][0]['data']['AWSAccountId'] = account
-    result['key'][0]['data']['Policy'] = {"Version" : "2012-10-17","Statement" : [ {"Sid" : "AllowLogGroupWriters", "Effect" : "Allow", "Principal" : { "Service" : "logs.eu-west-1.amazonaws.com" }, "Action" : [ "kms:GenerateDataKey", "kms:Describe*", "kms:Encrypt*", "kms:Decrypt*", "kms:ReEncrypt*" ], "Resource" : "*"  }, {"Sid" : "AllowRootAndServicePrincipal", "Effect" : "Allow", "Principal" : {"AWS" : [ "arn:aws:iam::833168553325:user/god", "arn:aws:iam::833168553325:root" ]}, "Action" : "kms:*", "Resource" : "*"  } ]}
+    result['key'][0]['data']['Policy'] = {"Version" : "2012-10-17","Statement" : [ {"Sid" : "AllowLogGroupWriters", "Effect" : "Allow", "Principal" : { "Service" : "logs.eu-west-1.amazonaws.com" }, "Action" : [ "kms:GenerateDataKey", "kms:Describe*", "kms:Encrypt*", "kms:Decrypt*", "kms:ReEncrypt*" ], "Resource" : "*"  }, {"Sid" : "AllowRootAndServicePrincipal", "Effect" : "Allow", "Principal" : {"AWS" : [ "arn:aws:iam::833168553325:user/principal", "arn:aws:iam::833168553325:root" ]}, "Action" : "kms:*", "Resource" : "*"  } ]}
 
     logger.debug(dumps(result))
 
