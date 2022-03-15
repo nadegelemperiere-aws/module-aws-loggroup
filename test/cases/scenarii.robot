@@ -19,27 +19,30 @@ Library         technogix_iac_keywords.cloudwatch
 Library         technogix_iac_keywords.iam
 Library         technogix_iac_keywords.kms
 Library         ../keywords/data.py
+Library         OperatingSystem
+
 
 *** Variables ***
 ${KEEPASS_DATABASE}                 ${vault_database}
-${KEEPASS_KEY}                      ${vault_key}
-${KEEPASS_GOD_KEY_ENTRY}            /engineering-environment/aws/aws-god-access-key
+${KEEPASS_KEY_ENV}                  ${vault_key_env}
+${KEEPASS_PRINCIPAL_KEY_ENTRY}      /engineering-environment/aws/aws-principal-access-key
 ${KEEPASS_ACCOUNT_ENTRY}            /engineering-environment/aws/aws-account
-${KEEPASS_GOD_USERNAME}             /engineering-environment/aws/aws-god-credentials
+${KEEPASS_PRINCIPAL_USERNAME}       /engineering-environment/aws/aws-principal-credentials
 ${REGION}                           eu-west-1
 
 *** Test Cases ***
 Prepare environment
-    [Documentation]         Retrieve god credential from database and initialize python tests keywords
-    ${god_access}           Load Keepass Database Secret            ${KEEPASS_DATABASE}     ${KEEPASS_KEY}  ${KEEPASS_GOD_KEY_ENTRY}            username
-    ${god_secret}           Load Keepass Database Secret            ${KEEPASS_DATABASE}     ${KEEPASS_KEY}  ${KEEPASS_GOD_KEY_ENTRY}            password
-    ${ACCOUNT}              Load Keepass Database Secret            ${KEEPASS_DATABASE}     ${KEEPASS_KEY}  ${KEEPASS_ACCOUNT_ENTRY}            password
-    ${god_name}             Load Keepass Database Secret            ${KEEPASS_DATABASE}     ${KEEPASS_KEY}  ${KEEPASS_GOD_USERNAME}     username
-    Initialize Terraform    ${REGION}   ${god_access}   ${god_secret}
-    Initialize Cloudwatch   None        ${god_access}   ${god_secret}    ${REGION}
-    Initialize IAM          None        ${god_access}   ${god_secret}    ${REGION}
-    Initialize KMS          None        ${god_access}   ${god_secret}    ${REGION}
-    ${TF_PARAMETERS}=       Create Dictionary   account=${ACCOUNT}    service_principal=${god_name}
+    [Documentation]         Retrieve principal credential from database and initialize python tests keywords
+    ${keepass_key}          Get Environment Variable          ${KEEPASS_KEY_ENV}
+    ${principal_access}     Load Keepass Database Secret      ${KEEPASS_DATABASE}     ${keepass_key}  ${KEEPASS_PRINCIPAL_KEY_ENTRY}    username
+    ${principal_secret}     Load Keepass Database Secret      ${KEEPASS_DATABASE}     ${keepass_key}  ${KEEPASS_PRINCIPAL_KEY_ENTRY}    password
+    ${ACCOUNT}              Load Keepass Database Secret      ${KEEPASS_DATABASE}     ${keepass_key}  ${KEEPASS_ACCOUNT_ENTRY}          password
+    ${principal_name}       Load Keepass Database Secret      ${KEEPASS_DATABASE}     ${keepass_key}  ${KEEPASS_PRINCIPAL_USERNAME}     username
+    Initialize Terraform    ${REGION}   ${principal_access}   ${principal_secret}
+    Initialize Cloudwatch   None        ${principal_access}   ${principal_secret}    ${REGION}
+    Initialize IAM          None        ${principal_access}   ${principal_secret}    ${REGION}
+    Initialize KMS          None        ${principal_access}   ${principal_secret}    ${REGION}
+    ${TF_PARAMETERS}=       Create Dictionary   account=${ACCOUNT}    service_principal=${principal_name}
     Set Global Variable     ${TF_PARAMETERS}
     Set Global Variable     ${ACCOUNT}
 
