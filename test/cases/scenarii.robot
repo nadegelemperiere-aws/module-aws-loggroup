@@ -1,23 +1,21 @@
 # -------------------------------------------------------
-# TECHNOGIX
-# -------------------------------------------------------
-# Copyright (c) [2022] Technogix SARL
+# Copyright (c) [2022] Nadege Lemperiere
 # All rights reserved
 # -------------------------------------------------------
 # Robotframework test suite for module
 # -------------------------------------------------------
 # Nadège LEMPERIERE, @12 november 2021
-# Latest revision: 12 november 2021
+# Latest revision: 20 november 2023
 # -------------------------------------------------------
 
 
 *** Settings ***
 Documentation   A test case to check loggroup creation using module
-Library         technogix_iac_keywords.terraform
-Library         technogix_iac_keywords.keepass
-Library         technogix_iac_keywords.cloudwatch
-Library         technogix_iac_keywords.iam
-Library         technogix_iac_keywords.kms
+Library         aws_iac_keywords.terraform
+Library         aws_iac_keywords.keepass
+Library         aws_iac_keywords.cloudwatch
+Library         aws_iac_keywords.iam
+Library         aws_iac_keywords.kms
 Library         ../keywords/data.py
 Library         OperatingSystem
 
@@ -25,9 +23,9 @@ Library         OperatingSystem
 *** Variables ***
 ${KEEPASS_DATABASE}                 ${vault_database}
 ${KEEPASS_KEY_ENV}                  ${vault_key_env}
-${KEEPASS_PRINCIPAL_KEY_ENTRY}      /engineering-environment/aws/aws-principal-access-key
-${KEEPASS_ACCOUNT_ENTRY}            /engineering-environment/aws/aws-account
-${KEEPASS_PRINCIPAL_USERNAME}       /engineering-environment/aws/aws-principal-credentials
+${KEEPASS_PRINCIPAL_KEY_ENTRY}      /aws/aws-principal-access-key
+${KEEPASS_ACCOUNT_ENTRY}            /aws/aws-account
+${KEEPASS_PRINCIPAL_USERNAME}       /aws/aws-principal-credentials
 ${REGION}                           eu-west-1
 
 *** Test Cases ***
